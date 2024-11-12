@@ -39,12 +39,13 @@ namespace Maze_Final
             int width = random1.Next(MIN_SIZE, MAX_SIZE);
             int height = random1.Next(MIN_SIZE, MAX_SIZE);
 
+            //ensures newly created  level stays within bounds
             do
             {
                 width = random1.Next(MIN_SIZE, MAX_SIZE);
                 height = random1.Next(MIN_SIZE, MAX_SIZE);
             }
-            while (width < prevExit.X || height < prevExit.Y || width < prevHero.X || height < prevHero.Y);
+            while (width <= prevExit.X || height <= prevExit.Y || width <= prevHero.X || height <= prevHero.Y);
 
 
             currentLevel = new Level(width, height, numEnemies, numPickups, currentHero);
@@ -277,18 +278,17 @@ namespace Maze_Final
             EnemyTile[] enemies = currentLevel.enemy;
             for (int i = 0; i < enemies.Length; i++)
             {
-                GruntTile grunt = (GruntTile)enemies[i];
                 if (enemies[i].IsDead == false)
                 {
-                    var targets = grunt.GetTargets();
+                    var targets = enemies[i].GetTargets();
 
                     foreach (var target in targets)
                     {
                         if (target == null) continue;
 
-                        if (target is HeroTile hero)
+                        if (target is CharacterTile character)
                         {
-                            grunt.Attack(hero);
+                            enemies[i].Attack(character);
                         }
                     }
                 }
